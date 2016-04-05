@@ -76,22 +76,22 @@ class WikiParser {
   }
   def splitTitleAndCharacter(_line: String) : (String,String) = {
     val line = {
-      val l1 = if(_line.contains("）※")) _line.substring(0,_line.lastIndexOf("※"))
-      else _line
+      val l1 = if(_line.contains("）※")) _line.substring(0,_line.lastIndexOf("※")).trim
+      else _line.trim
       val s = if(l1.startsWith("*")) l1.drop(2).trim else l1.trim
-      if(s.endsWith("）")) s.dropRight(1) else s
+      if(s.endsWith("）") || s.endsWith(")")) s.dropRight(1) else s
     }
     var index = line.length - 1
     var closeCount = 1
     for(i <- line.length - 1 to 0 by -1){
       line(i) match{
-        case '（' => {
+        case '（' | '(' => {
           closeCount -= 1
           if(closeCount == 0){
-            return (line.substring(0,i),line.substring(i+1,line.length))
+            return (line.substring(0,i).trim,line.substring(i+1,line.length))
           }
         }
-        case '）' => {
+        case '）' | ')' => {
           closeCount += 1
         }
         case _ =>
