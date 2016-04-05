@@ -1,4 +1,4 @@
-import com.takezoux2.vactor.aggregation.{TotalCastNumber, CastNumberPerYear}
+import com.takezoux2.vactor.aggregation.{RankingSortBy, RankingMaker, TotalCastNumber, CastNumberPerYear}
 import com.takezoux2.vactor.{VoiceActorDataAggregator, WikiParser, WikiDBReader}
 
 /**
@@ -16,9 +16,11 @@ object App {
 
     val data = aggregator.getFemaleVoiceActorsInJapan()
 
-    CastNumberPerYear(2015,data).save("output/female2015.csv")
-    TotalCastNumber(data).save("output/female-total.csv")
+    //CastNumberPerYear(2015,data).save("output/female2015.csv")
+    //TotalCastNumber(data).save("output/female-total.csv")
 
+
+    RankingMaker(ae => ae.year >= 2012,RankingSortBy.MainCastNumber)(data).save("output/female-main2012+.csv")
 
 
   }

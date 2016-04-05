@@ -46,7 +46,8 @@ class WikiDBReader {
 
 
   val excludeActorNames = Set(
-    "八武崎碧" // 悠木碧の旧名
+    "八武崎碧", // 悠木碧の旧名
+    "粗忽屋浜田山店" // 田中真弓別名義
   )
 
   def getActoresses() = getActors("日本の女性声優")
