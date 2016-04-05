@@ -1,6 +1,7 @@
 package com.takezoux2.vactor
 
 /**
+  * データベースからの読み出しと、解析を統合する
   * Created by takezoux2 on 2016/03/23.
   */
 class VoiceActorDataAggregator(parser: WikiParser,wikiDBReader: WikiDBReader) {

@@ -9,8 +9,7 @@ object App {
 
   def main(args: Array[String]) : Unit = {
 
-    val dbReader = new WikiDBReader()
-    dbReader.init()
+    val dbReader = new WikiDBReader().init()
     val parser = new WikiParser()
     val aggregator = new VoiceActorDataAggregator(parser,dbReader)
 

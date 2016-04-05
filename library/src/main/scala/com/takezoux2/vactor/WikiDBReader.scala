@@ -10,10 +10,10 @@ import scalikejdbc._
 class WikiDBReader {
 
 
-  def init() : Unit = {
+  def init() : WikiDBReader = {
     init("db.properties")
   }
-  def init(propPath: String) : Unit = {
+  def init(propPath: String) : WikiDBReader = {
 
     val prop = loadProp(propPath)
 
@@ -24,6 +24,8 @@ class WikiDBReader {
     Class.forName("com.mysql.jdbc.Driver")
     ConnectionPool.singleton(db,
       username, password)
+
+    this
   }
 
   def loadProp(propPath: String) = {
@@ -68,6 +70,11 @@ class WikiDBReader {
   }
 
 
+  /**
+    * Get page text by page id
+    * @param pageId
+    * @return
+    */
   def getText(pageId: Int) : Option[String] = {
     implicit val session = AutoSession
     checkRedirect(sql"""
@@ -77,6 +84,11 @@ class WikiDBReader {
     """.map(r => new String(r.bytes(1),"utf-8")).headOption.apply)
   }
 
+  /**
+    * Get page text by actor name.
+    * @param actorName
+    * @return
+    */
   def getText(actorName: String) : Option[String] = {
     implicit val session = AutoSession
 
@@ -89,7 +101,13 @@ class WikiDBReader {
 
 
   }
-  def checkRedirect(text: Option[String]) = {
+
+  /**
+    * If page is redirect page, get redirect target page text.
+    * @param text
+    * @return
+    */
+  def checkRedirect(text: Option[String]) : Option[String] = {
     val redirectRegex = """\#REDIRECT \[\[(.*?)]]""".r
     text match{
       case Some(t) => redirectRegex.findFirstMatchIn(t) match{
